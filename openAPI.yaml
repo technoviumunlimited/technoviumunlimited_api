@@ -1,0 +1,504 @@
+openapi: 3.0.0
+# some good links to learn
+# https://shashankvivek-7.medium.com/go-swagger-user-authentication-securing-api-using-jwt-part-2-c80fdc1a020a
+info: 
+    title: Technovium Unlimited API version 1.0.0
+    description: TU API version to connect to Unity3D of any other client
+    version: 0.1.0
+
+servers:
+    - url: 'http://localhost:5000/api/v1'
+
+security:
+  - bearerAuth: []
+
+paths:
+    ##
+    # Admin can see all information of the users -> except password
+    # add roles: user, creator and admin
+    ##
+    /users:
+        get:
+            summary: Get all users
+            description: Get all users of the game
+            operationId: getUsers
+            requestBody:
+                description: get all users
+                content:
+                    'application/json':
+                        schema:
+                            $ref: '#/components/schemas/Users'   
+            security:
+                - basicAuth: []
+            responses:
+                200:
+                    description: 'Authenticated, you can browse all users TODO: ONLY ADMIN can access this information; can authanticated user get information of all users????'
+                403: 
+                    description: 'You do not have necessary permissions for the resource'
+
+
+    ##
+    # Admin can see all information of the user
+    # user or creator can see own information
+    ##
+                
+    /users/{id}:
+        get:
+            summary: Get user with {user_id}
+            description: Get user with parameter of {user_id}
+            operationId: getOneUser
+            # gave me error with {id} https://oai.github.io/Documentation/specification-parameters.html
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                        $ref: '#/components/schemas/User'
+            requestBody:
+                description: get only one user TODO what information should be visible
+                content:
+                    'application/json':
+                        schema:
+                            $ref: '#/components/schemas/User'
+            security:
+                - basicAuth: []   
+            responses:
+                200:
+                    description: user results
+                403: 
+                    description: 'You do not have necessary permissions for the resource'
+                
+    /users/signup:
+        post:
+            summary: Signup user
+            description: Signup for new account
+            operationId: signUpUser
+            requestBody:
+                description: Add user to database
+                content:
+                    'application/json':
+                        schema:
+                            $ref: '#/components/schemas/User'   
+            responses:
+                '201':
+                    description: User Created
+    /users/login: #add JWT security
+        post:
+            summary: Loggin User
+            description: Returns token for authorized User
+            operationId: LogginUser
+            requestBody:
+                description: Loggin user
+                content:
+                    'application/json':
+                        schema:
+                            $ref: '#/components/schemas/User'   
+            responses:
+                '200':
+                    description: LoggedIn
+    /users/resetpassword: #add JWT security
+        post:
+            summary: Reset password
+            description: With this request you can send a link to email to reset password
+            operationId: ResetPassword
+            security:
+                - Bearer: []
+            requestBody:
+                description: With this request you can send a link to email to reset password
+                content:
+                    'application/json':
+                        schema:
+                            $ref: '#/components/schemas/User'   
+            responses:
+                '201':
+                    description: email with an resetlink has been sennt to the user email address
+    
+    ##
+    # Admin can see all information of the users -> except password
+    # user or creatr can access his/her information
+    ##
+
+    /users/settings: #add JWT security
+        put:
+            summary: User settings (email, pass etc.)
+            description: You can update all settings of the user
+            operationId: Settings
+            security:
+                - Bearer: []
+            requestBody:
+                description: You can update all settings of the user
+                content:
+                    'application/json':
+                        schema:
+                            $ref: '#/components/schemas/User'   
+            responses:
+                204:
+                    description: User Updated
+                400:
+                    description: Bad Request
+                404:
+                    description: Item Not Found
+                500:
+                    description: Server error
+                403: 
+                    description: 'You do not have necessary permissions for the resource'
+        get:
+            summary: Get user settings
+            description: Get user settings
+            operationId: getUserSettings
+            security:
+                - Bearer: []
+            requestBody:
+                description: get user settings
+                content:
+                    'application/json':
+                        schema:
+                            $ref: '#/components/schemas/User'   
+            responses:
+                '200':
+                    description: user settings recieved
+                '403': 
+                    description: 'You do not have necessary permissions for the resource' 
+
+    ##
+    # user or creator can access and update his/her information
+    ##
+
+    /users/game/latestLocation/{user_id}:
+        post:
+            summary: Add latest user location
+            description: This allows to add latest location of the user 
+            operationId: addLatestUserLocation
+            security:
+                - Bearer: []
+            parameters:
+                - name: user_id
+                  in: path
+                  required: true
+                  schema:
+                        $ref: '#/components/schemas/UserLocation'
+            requestBody:
+                description: This allows to add latest location of the user
+                content:
+                    'application/json':
+                        schema:
+                            $ref: '#/components/schemas/UserLocation'
+                        
+            responses:
+                201:
+                    description: created
+                40: 
+                    description: 'You do not have necessary permissions for the resource'
+        get:
+            summary: Get user latest game location
+            description: Get user latest game location
+            operationId: getUserGameLocation
+            security:
+                - Bearer: []
+            parameters:
+                - name: user_id
+                  in: path
+                  required: true
+                  schema:
+                        $ref: '#/components/schemas/UserLocation'
+            requestBody:
+                description: get user location
+                content:
+                    'application/json':
+                        schema:
+                            $ref: '#/components/schemas/UserLocation'   
+            responses:
+                200:
+                    description: recieved
+                403: 
+                    description: 'You do not have necessary permissions for the resource'
+    ##
+    # user or creator can access and update his/her information
+    ##
+    /users/game/score/{user_id}:
+        get:
+            summary: Get all scores of the user
+            description: Get all scores of the use 
+            operationId: getAllAchievements
+            security:
+                - Bearer: []
+            # gave me error with {id} https://oai.github.io/Documentation/specification-parameters.html
+            parameters:
+                - name: user_id
+                  in: path
+                  required: true
+                  schema:
+                        $ref: '#/components/schemas/Achievement'
+            requestBody:
+                description: get all scores of the use
+                content:
+                    'application/json':
+                        schema:
+                            $ref: '#/components/schemas/Achievement'
+                        
+            responses:
+                201:
+                    description: created
+                403: 
+                    description: 'You do not have necessary permissions for the resource'
+    ##
+    # user or creator can access and update his/her information
+    ##
+    /users/game/level/{level_id}/success:
+        post:
+            summary: add achievement of the user -> see the schema of game and level -> game_id and level_id
+            description: add achievement of the user -> see the schema of game and level -> game_id and level_id
+            operationId: postAchievementOfUser
+            security:
+                - Bearer: []
+            parameters:
+                - name: level_id
+                  in: path
+                  required: true
+                  schema:
+                        $ref: '#/components/schemas/Score'
+            requestBody:
+                description: post add achievement of the user
+                content:
+                    'application/json':
+                        schema:
+                            $ref: '#/components/schemas/Score'   
+            responses:
+                201:
+                    description: score created
+                403: 
+                    description: 'You do not have necessary permissions for the resource'
+    ##
+    # user or creator can access and update his/her information
+    ##
+    /users/game/level/{level_id}/started:
+        post:
+            summary: Log started level
+            description: Log started level of the user -> see the schema of game and level -> game_id and level_id. Every time user starts a level we add new record. We want to log all actions ot that user to see in how much time user finished the level.
+            operationId: addStartedLevelOfUser
+            security:
+                - Bearer: []
+            parameters:
+                - name: level_id
+                  in: path
+                  required: true
+                  schema:
+                        $ref: '#/components/schemas/Score'
+            requestBody:
+                description: post add achievement of the user
+                content:
+                    'application/json':
+                        schema:
+                            $ref: '#/components/schemas/Score'   
+            responses:
+                201:
+                    description: score updated to started
+                403: 
+                    description: 'You do not have necessary permissions for the resource'
+    /games:
+        get:
+            summary: Get all games
+            description: Get all games
+            operationId: getGames
+            requestBody:
+                description: get all games
+                content:
+                    'application/json':
+                        schema:
+                            $ref: '#/components/schemas/Games'
+            responses:
+                '200':
+                    description: recieved
+    /games/{id}:
+        get:
+            summary: Get all games
+            description: Get all games
+            operationId: getGames
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                        $ref: '#/components/schemas/Game'
+            requestBody:
+                description: Get all games
+                content:
+                    'application/json':
+                        schema:
+                            $ref: '#/components/schemas/Game'
+            responses:
+                '200':
+                    description: recieved 
+    /levels:
+        get:
+            summary: Get all levels
+            description: Get all levels
+            operationId: getAllLevels
+            requestBody:
+                description: Get all levels
+                content:
+                    'application/json':
+                        schema:
+                            $ref: '#/components/schemas/Levels'
+            responses:
+                200:
+                    description: recieved
+    /levels/{game_id}:
+        get:
+            summary: Get all levels of the game
+            description: Get all levels of the game
+            operationId: getAllLevelsOfGame
+            parameters:
+                - name: game_id
+                  in: path
+                  required: true
+                  schema:
+                        $ref: '#/components/schemas/Level'
+            requestBody:
+                description: Get all levels of one game
+                content:
+                    'application/json':
+                        schema:
+                            $ref: '#/components/schemas/Level'
+            responses:
+                '200':
+                    description: recieved
+    
+components:
+    schemas:
+        Users:
+            type: array
+            items:
+                $ref: '#/components/schemas/User'
+        User:
+           type: object
+           required:
+               - id
+               - username
+               - email
+               - password
+               - date_of_birth
+               - gender
+           properties:
+                id:
+                    type: string
+                username:
+                    type: string
+                email:
+                    type: string
+                password:
+                    type: string
+                date_of_birth:
+                    type: string 
+                gender:
+                    type: string
+                status:
+                    type: string
+                    enum: 
+                        - Live
+                        - Deleted
+        UserLocation:
+           type: object
+           required:
+               - id
+               - user_id
+               - game_id
+               - level_id
+               - location_coordination #maybe not neded
+               - created
+
+           properties:
+                id:
+                    type: string
+                user_id:
+                    type: string
+                game_id:
+                    type: string
+                level_id:
+                    type: string
+                location_coordination: #maybe not needed
+                    type: string 
+                created:
+                    type: string
+        Scores:
+            type: array
+            items:
+                $ref: '#/components/schemas/Score'
+        Score:
+           type: object
+           required:
+               - id
+               - user_id
+               - game_id
+               - level_id
+               - status
+               - created
+           properties:
+                id:
+                    type: string
+                user_id:
+                    type: string
+                game_id:
+                    type: string
+                level_id:
+                    type: string
+                status: #success, started
+                    type: string 
+                    enum: 
+                        - success
+                        - started
+                created:
+                    type: string
+        Games:
+            type: array
+            items:
+                $ref: '#/components/schemas/Game'
+        Game:       
+            type: object
+            required:
+                - id
+                - name
+                - description
+                - category
+                - created
+                - created_by
+            properties:
+                id:
+                    type: string
+                name:
+                    type: string
+                category:
+                    type: string
+                created:
+                    type: string
+                created_by:
+                    type: string
+        Levels:
+            type: array
+            items:
+                $ref: '#/components/schemas/Level'   
+        Level:
+            type: object
+            required: 
+                - id
+                - game_id
+                - level
+                - created
+                - created_by
+            properties:
+                id:
+                    type: string
+                game_id:
+                    type: string
+                level:
+                    type: integer
+                created:
+                    type: string 
+                created_by:
+                    type: string
+
+    securitySchemes:
+        bearerAuth:
+            type: http
+            scheme: bearer
+            bearerFormat: JWT
