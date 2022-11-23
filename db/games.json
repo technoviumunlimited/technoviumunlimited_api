@@ -1,0 +1,14 @@
+[{
+  "_id": {
+    "$oid": "633acc0cc6b92f6811ecfeda"
+  },
+  "name": "aMAZEing",
+  "category": "fun",
+  "created": {
+    "$timestamp": {
+      "t": 1664797806,
+      "i": 64
+    }
+  },
+  "created_by": "Bas de Wildt"
+}]

@@ -1,0 +1,15 @@
+[{
+  "_id": {
+    "$oid": "633acb03c6b92f6811ecfed9"
+  },
+  "username": "davor",
+  "email": "d.radic@roc-nijmegen.nl",
+  "password": "eeeeeee",
+  "date_of_birth": {
+    "$date": {
+      "$numberLong": "1589811030000"
+    }
+  },
+  "gender": "male",
+  "status": "live"
+}]
