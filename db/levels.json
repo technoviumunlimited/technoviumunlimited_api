@@ -1,0 +1,14 @@
+[{
+  "_id": {
+    "$oid": "633af748db33cbf41ce4fb06"
+  },
+  "game_id": "633acc0cc6b92f6811ecfeda",
+  "level": "1",
+  "created": {
+    "$timestamp": {
+      "t": 1664808912,
+      "i": 19
+    }
+  },
+  "created_by": "user_id"
+}]
