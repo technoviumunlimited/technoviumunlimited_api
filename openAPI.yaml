@@ -392,11 +392,7 @@ components:
                     type: string 
                 gender:
                     type: string
-                status:
-                    type: string
-                    enum: 
-                        - Live
-                        - Deleted
+                
         UserLocation:
            type: object
            required:
