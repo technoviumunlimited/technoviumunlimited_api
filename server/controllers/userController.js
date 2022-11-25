@@ -47,9 +47,7 @@ exports.createUser = async (req, res) => {
    if(!username) {
       var username_error = {'name' : 'username', 'status': '400', 'message' : 'Username is required.'};
       errors.push(username_error);
-   }
-   
-   if(!validator.isAlphanumeric(username)){
+    } else if (!validator.isAlphanumeric(username)){
       var username_alphanumeric_error = {'name' : 'username_alphanumeric', 'status': '400', 'message' : 'Username needs to be combination of numbers and letters.'};
       errors.push(username_alphanumeric_error);
    }
@@ -57,9 +55,7 @@ exports.createUser = async (req, res) => {
    if(!email) {
       var email_error = {'name' : 'email', 'status': '400', 'message' : 'Email is required.'};
       errors.push(email_error);
-   }
-
-   if(!validator.isEmail(email)) {
+   } else if (!validator.isEmail(email)) {
       var email_error = {'name' : 'email', 'status': '400', 'message' : 'The Email Address is Not a Well Formed E-mail address'};
       errors.push(email_error);
    }
@@ -110,7 +106,7 @@ exports.createUser = async (req, res) => {
 
    try {
       const hashedPass = await bcrypt.hash(req.body.password, 10);
-      
+
       const newUser = new User({
          username:      req.body.username.toLowerCase(),
          email:         req.body.email.toLowerCase(),
