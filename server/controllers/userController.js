@@ -47,9 +47,12 @@ exports.createUser = async (req, res) => {
    if(!username) {
       var username_error = {'name' : 'username', 'status': '400', 'message' : 'Username is required.'};
       errors.push(username_error);
-    } else if (!validator.isAlphanumeric(username)){
+   } else if (!validator.isAlphanumeric(username)){
       var username_alphanumeric_error = {'name' : 'username_alphanumeric', 'status': '400', 'message' : 'Username needs to be combination of numbers and letters.'};
       errors.push(username_alphanumeric_error);
+   } else if (!validator.isLength(username, {min:6, max: 8})){
+      var username_min_max_length_error = {'name' : 'username_min_max_length', 'status': '400', 'message' : 'Username needs to be min 6 and max 8 characters.'};
+      errors.push(username_min_max_length_error);
    }
 
    if(!email) {
@@ -63,22 +66,25 @@ exports.createUser = async (req, res) => {
    if(!password) {
       var password_error = {'name' : 'password', 'status': '400', 'message' : 'Password is required.'};
       errors.push(password_error);
+   }else if (!validator.isLength(password, {min:6, max: 100})){
+      var password_min_max_length_error = {'name' : 'password_min_max_length', 'status': '400', 'message' : 'Password needs to be min 6 and max 100 characters.'};
+      errors.push(password_min_max_length_error);
    }
 
    if(!date_of_birth) {
       var date_of_birth_error = {'name' : 'date_of_birth', 'status': '400', 'message' : 'Date of birth is required.'};
       errors.push(date_of_birth_error);
-   }
-
-   if(!validator.isDate(date_of_birth)) {
+   } else if (!validator.isDate(date_of_birth)) {
       var date_of_birth_format_error = {'name' : 'date_of_birth_format', 'status': '400', 'message' : 'Date of birth is not formated ex. YYYY/MM/DD.'};
       errors.push(date_of_birth_format_error);
    }
-   
 
    if(!gender) {
       var gender_error = {'name' : 'gender', 'status': '400', 'message' : 'Gender is required.'};
       errors.push(gender_error);
+   } else if (gender !== 'male' && gender !== 'female'){
+      var gender_error_choose_from_options = {'name' : 'gender', 'status': '400', 'message' : 'You need to choose from male or female.'};
+      errors.push(gender_error_choose_from_options);
    }
 
    
