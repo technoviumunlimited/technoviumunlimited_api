@@ -42,7 +42,29 @@ exports.getAllUsers = async (req, res) => {
 
 exports.createUser = async (req, res) => {
    var errors = [];
-   const { username, email, password, date_of_birth, gender } = req.body;
+   const { firstname, lastname, username, email, password, date_of_birth, gender } = req.body;
+
+   if(!firstname) {
+      var firstname_error = {'name' : 'firstname', 'status': '400', 'message' : 'Firstname is required.'};
+      errors.push(firstname_error);
+   } else if (!validator.isAlphanumeric(firstname)){
+      var firstname_alphanumeric_error = {'name' : 'firstname_alphanumeric', 'status': '400', 'message' : 'Firstname needs to be combination of numbers and letters.'};
+      errors.push(firstname_alphanumeric_error);
+   } else if (!validator.isLength(firstname, {min:2, max: 40})){
+      var firstname_min_max_length_error = {'name' : 'firstname_min_max_length', 'status': '400', 'message' : 'Firstname needs to be min 2 and max 40 characters.'};
+      errors.push(firstname_min_max_length_error);
+   }
+
+   if(!lastname) {
+      var lastname_error = {'name' : 'lastname', 'status': '400', 'message' : 'Lastname is required.'};
+      errors.push(lastname_error);
+   } else if (!validator.isAlphanumeric(lastname)){
+      var lastname_alphanumeric_error = {'name' : 'lastname_alphanumeric', 'status': '400', 'message' : 'Lastname needs to be combination of numbers and letters.'};
+      errors.push(lastname_alphanumeric_error);
+   } else if (!validator.isLength(lastname, {min:2, max: 40})){
+      var lastname_min_max_length_error = {'name' : 'lastname_min_max_length', 'status': '400', 'message' : 'Lastname needs to be min 2 and max 40 characters.'};
+      errors.push(lastname_min_max_length_error);
+   }
 
    if(!username) {
       var username_error = {'name' : 'username', 'status': '400', 'message' : 'Username is required.'};
