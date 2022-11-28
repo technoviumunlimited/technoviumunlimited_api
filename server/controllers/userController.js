@@ -1,6 +1,8 @@
 require("../models/db");
 const User = require("../models/User");
 const bcrypt = require("bcrypt");
+const jwt = require('jsonwebtoken')
+let refreshTokens = []
 
 /**
  * /api/user/{id}
@@ -67,3 +69,31 @@ exports.createUser = async (req, res) => {
       res.status(400).json({ message: err });
    }
 };
+
+/**
+ * /api/user/login/{username}
+ * POST login user
+ */
+
+exports.loginUser = async (req, res) => {
+  const user = User({
+      id: req.body.id,
+      email: req.body.email,
+      password: req.body.password
+    });
+
+    const accessToken = generateAccessToken(user)
+    const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET)
+
+  try {
+      refreshTokens.push(refreshToken)
+      res.json({user, accessToken: accessToken, refreshToken: refreshToken})
+  } catch (err) {
+   console.log(err.message);
+   res.status(400).json({ message: err });
+  }
+};
+
+function generateAccessToken(user) {
+  return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '15s' })
+}

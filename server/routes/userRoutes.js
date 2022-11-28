@@ -8,4 +8,6 @@ router.get("/api/user/:id", userController.getUser);
 
 router.post("/api/user/signup", userController.createUser);
 
+router.post("/api/user/login", userController.loginUser);
+
 module.exports = router;
