@@ -80,9 +80,9 @@ exports.loginUser = async (req, res) => {
       email: req.body.email,
       password: req.body.password
     });
-
-    const accessToken = generateAccessToken(user)
-    const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET)
+   var userToJson = user.toJSON();
+    const accessToken = generateAccessToken(userToJson)
+    const refreshToken = jwt.sign(userToJson, process.env.REFRESH_TOKEN_SECRET)
 
   try {
       refreshTokens.push(refreshToken)
@@ -94,5 +94,6 @@ exports.loginUser = async (req, res) => {
 };
 
 function generateAccessToken(user) {
+  console.log(typeof process.env.ACCESS_TOKEN_SECRET);
   return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '15s' })
 }
