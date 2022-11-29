@@ -1,7 +1,6 @@
 require("../models/db");
 const User = require("../models/User");
 const bcrypt = require("bcrypt");
-const validator = require('validator');
 const jwt = require('jsonwebtoken')
 let refreshTokens = []
 
@@ -45,12 +44,13 @@ exports.getAllUsers = async (req, res) => {
 exports.createUser = async (req, res) => {
 
    try {
-      const hashedPass = await bcrypt.hash(req.body.password, 10);
-
+   
       const newUser = new User({
-         username:      req.body.username.toLowerCase(),
-         email:         req.body.email.toLowerCase(),
-         password:      hashedPass,
+         firstname:     req.body.firstname,
+         lastname:      req.body.lastname,
+         username:      req.body.username,
+         email:         req.body.email,
+         password:      await bcrypt.hash(req.body.password, 10),
          date_of_birth: req.body.date_of_birth,
          gender:        req.body.gender,
          status:        "waiting_for_email_verification" // waiting_for_email_verification, live, deleted
