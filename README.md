@@ -2,7 +2,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/technoviumunlimited/technoviumunlimited_api">
-    <img src="https://raw.githubusercontent.com/technoviumunlimited/technoviumunlimited_api/main/assets/images/logo-399-205.png" alt="Technovium Unlimited logo" width="80" height="80">
+    <img src="https://raw.githubusercontent.com/technoviumunlimited/technoviumunlimited_api/main/assets/images/logo-399-205.png" alt="Technovium Unlimited logo" width="399" height="205">
   </a>
 
   <h3 align="center">Technovium Unlimited</h3>
