@@ -1,3 +1,25 @@
+<!-- PROJECT LOGO -->
+<br />
+<div align="center">
+  <a href="https://github.com/technoviumunlimited/technoviumunlimited_api">
+    <img src="images/logo.png" alt="Logo" width="80" height="80">
+  </a>
+
+  <h3 align="center">Technovium Unlimited</h3>
+
+  <p align="center">
+    An awesome README template to jumpstart your projects!
+    <br />
+    <a href="https://technoviumunlimited.nl" target="_blank"><strong>Explore the docs »</strong></a>
+    <br />
+    <br />
+    <a href="https://technoviumunlimited.nl">View Documentation</a>
+    ·
+    <a href="https://github.com/technoviumunlimited/technoviumunlimited_api/issues">Report Bug</a>
+    ·
+    <a href="https://github.com/technoviumunlimited/technoviumunlimited_api/issues">Request Feature</a>
+  </p>
+</div>
 # Getting Started with Technovium Unlimited API
 
 Make sure to run `npm install` after cloning the repository
