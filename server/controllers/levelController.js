@@ -66,7 +66,7 @@ exports.getLevels = async (req, res) => {
 };
 
 /**
- * /api/levels/:game_id
+ * /api/levels/:game_id/:limit
  * GET all levels of one game
  */
 
